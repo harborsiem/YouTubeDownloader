@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="7DF6DA02-4A97-4F18-8E4D-63738190FE11" Name="YouTube Downloader" Language="1033" Version="2.1.1.0" Manufacturer="Harbor" UpgradeCode="6369D297-D448-4773-AADE-7B02C59F8C19">
+        <Package Description="YouTube Downloader" Comments="YouTube Downloader Install" InstallerVersion="200" Compressed="yes" Platform="x86" InstallScope="perMachine" />
+        <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
+        <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed." Schedule="afterInstallValidate" />
+        <Upgrade Id="6A96389A-D2C9-4B0D-ADE9-6D6E36BDB714">
+            <UpgradeVersion OnlyDetect="yes" Property="NEWERFOUND" Minimum="2.1.1" IncludeMinimum="no" />
+        </Upgrade>
+        <CustomAction Id="NoDowngrade" Error="A later version of [ProductName] is already installed." />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="PFiles">
+                <Directory Id="APPLICATIONROOTDIRECTORY" Name="YouTubeDownloader">
+                </Directory>
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="YouTubeDownloader">
+                </Directory>
+            </Directory>
+        </Directory>
+        <DirectoryRef Id="APPLICATIONROOTDIRECTORY">
+            <Component Id="YOUTUBEDOWNLOADEREXE" Guid="F9E69009-7CF8-4940-839B-5661998F1F3C">
+                <File Id="YOUTUBEDOWNLOADEREXE1" Name="YouTubeDownloader.exe" Source="YouTubeDownloader\bin\Release\YouTubeDownloader.exe" KeyPath="yes" Checksum="yes" />
+                <File Id="YOUTUBEDOWNLOADEREXE2" Name="YouTubeDownloader.config" Source="YouTubeDownloader\bin\Release\YouTubeDownloader.exe.config" Checksum="yes" />
+            </Component>
+        </DirectoryRef>
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="8681150B-9AFE-486A-BF6B-09C02519AC87">
+                <Shortcut Id="ApplicationStartMenuShortcut" Name="YouTube Downloader" Target="[APPLICATIONROOTDIRECTORY]YouTubeDownloader.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" Icon="AppIcon.exe" IconIndex="0" />
+                <Shortcut Id="UninstallProduct" Name="Uninstall YouTube Downloader" Description="Uninstalls YouTube Downloader" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
+                <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+                <RegistryValue Id="regBDF80E493A637CB6E0F986D6EA625207" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Value="" Type="string" KeyPath="yes" />
+            </Component>
+        </DirectoryRef>
+        <Property Id="PREVIOUSFOUND" Secure="yes" />
+        <UI />
+        <PropertyRef Id="NETFRAMEWORK40FULL" />
+        <Condition Message="This application requires .NET Framework 4.0.">Installed OR NETFRAMEWORK40FULL</Condition>
+        <Feature Id="DefaultFeature" Title="Main Feature" Level="1">
+            <ComponentRef Id="YOUTUBEDOWNLOADEREXE" />
+            <ComponentRef Id="ApplicationShortcut" />
+        </Feature>
+        <UIRef Id="WixUI_Minimal" />
+        <UIRef Id="WixUI_ErrorProgressText" />
+        <InstallExecuteSequence>
+            <Custom Action="NoDowngrade" After="FindRelatedProducts">NEWERFOUND</Custom>
+        </InstallExecuteSequence>
+        <Icon Id="AppIcon.exe" SourceFile="App_Icon.ico" />
+        <WixVariable Id="WixUILicenseRtf" Value="Cpol.rtf" />
+    </Product>
+</Wix>
