@@ -4,17 +4,13 @@
         <Package Description="YouTube Downloader" Comments="YouTube Downloader Install" InstallerVersion="200" Compressed="yes" Platform="x86" InstallScope="perMachine" />
         <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
         <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed." Schedule="afterInstallValidate" />
-        <Upgrade Id="6A96389A-D2C9-4B0D-ADE9-6D6E36BDB714">
-            <UpgradeVersion OnlyDetect="yes" Property="NEWERFOUND" Minimum="2.2.0" IncludeMinimum="no" />
-        </Upgrade>
-        <CustomAction Id="NoDowngrade" Error="A later version of [ProductName] is already installed." />
         <Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder" Name="PFiles">
+            <Directory Id="ProgramFilesFolder" Name="ProgramFiles">
                 <Directory Id="APPLICATIONROOTDIRECTORY" Name="YouTubeDownloader">
                 </Directory>
             </Directory>
             <Directory Id="ProgramMenuFolder">
-                <Directory Id="ApplicationProgramsFolder" Name="YouTubeDownloader">
+                <Directory Id="ApplicationMenuFolder" Name="YouTubeDownloader">
                 </Directory>
             </Directory>
         </Directory>
@@ -24,15 +20,14 @@
                 <File Id="YOUTUBEDOWNLOADEREXE2" Name="YouTubeDownloader.config" Source="YouTubeDownloader\bin\Release\YouTubeDownloader.exe.config" Checksum="yes" />
             </Component>
         </DirectoryRef>
-        <DirectoryRef Id="ApplicationProgramsFolder">
+        <DirectoryRef Id="ApplicationMenuFolder">
             <Component Id="ApplicationShortcut" Guid="8681150B-9AFE-486A-BF6B-09C02519AC87">
                 <Shortcut Id="ApplicationStartMenuShortcut" Name="YouTube Downloader" Target="[APPLICATIONROOTDIRECTORY]YouTubeDownloader.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" Icon="AppIcon.exe" IconIndex="0" />
                 <Shortcut Id="UninstallProduct" Name="Uninstall YouTube Downloader" Description="Uninstalls YouTube Downloader" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
-                <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
-                <RegistryValue Id="regBDF80E493A637CB6E0F986D6EA625207" Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Value="" Type="string" KeyPath="yes" />
+                <RemoveFolder Id="ApplicationMenuFolder" On="uninstall" />
+                <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Value="" Type="string" KeyPath="yes" />
             </Component>
         </DirectoryRef>
-        <Property Id="PREVIOUSFOUND" Secure="yes" />
         <UI />
         <PropertyRef Id="NETFRAMEWORK40FULL" />
         <Condition Message="This application requires .NET Framework 4.0.">Installed OR NETFRAMEWORK40FULL</Condition>
@@ -42,9 +37,6 @@
         </Feature>
         <UIRef Id="WixUI_Minimal" />
         <UIRef Id="WixUI_ErrorProgressText" />
-        <InstallExecuteSequence>
-            <Custom Action="NoDowngrade" After="FindRelatedProducts">NEWERFOUND</Custom>
-        </InstallExecuteSequence>
         <Icon Id="AppIcon.exe" SourceFile="App_Icon.ico" />
         <WixVariable Id="WixUILicenseRtf" Value="Cpol.rtf" />
     </Product>

@@ -58,6 +58,22 @@ namespace YouTubeDownloader {
             infoText = webClient.DownloadString(infoUrl);
             webClient.Dispose();
             var infoValues = HttpUtility.ParseQueryString(infoText);
+
+#if DEBUG
+            Dictionary<String, String> testInfoValues = new Dictionary<string, string>();
+            foreach (String key in infoValues) {
+                testInfoValues.Add(key, infoValues[key]);
+            }
+#endif
+
+            String offerButtonText;
+            offerButtonText = infoValues["ypc_offer_button_text"];
+            if (offerButtonText == null) {
+                offerButtonText = String.Empty;
+            } else {
+                offerButtonText = ", Pay " + offerButtonText;
+            }
+
             status = infoValues["status"];
             if (status != null && status == "fail") {
                 var errorcode = infoValues["errorcode"];
@@ -80,6 +96,9 @@ namespace YouTubeDownloader {
             string playerVersion = regex.Match(html).Result("$1");
 
             foreach (var item in videos) {
+                if (String.IsNullOrEmpty(item)) {
+                    throw new ArgumentException("Cannot download \"" + title + "\"" + offerButtonText);
+                }
                 try {
                     var data = HttpUtility.ParseQueryString(item);
                     var fallback_host = data["fallback_host"];
@@ -96,7 +115,7 @@ namespace YouTubeDownloader {
 
                     // If the download-URL contains encrypted signature
                     if (data["s"] != null) {
-                        
+
                         string decryptedSignature;
                         try {
                             // Decrypt the signature
