@@ -149,10 +149,19 @@ namespace YouTubeDownloader {
         }
 
         private static long GetSize(string videoUrl) {
+            long bytesLength;
+            var infos = HttpUtility.ParseQueryString(videoUrl);
+            string size = infos["clen"];
+            if (!string.IsNullOrEmpty(size)) {
+                if (long.TryParse(size, out bytesLength)) {
+                    return bytesLength;
+                }
+            }
+
             HttpWebRequest fileInfoRequest = (HttpWebRequest)HttpWebRequest.Create(videoUrl);
             fileInfoRequest.Proxy = Helper.InitialProxy();
             HttpWebResponse fileInfoResponse = (HttpWebResponse)fileInfoRequest.GetResponse();
-            long bytesLength = fileInfoResponse.ContentLength;
+            bytesLength = fileInfoResponse.ContentLength;
             fileInfoRequest.Abort();
             return bytesLength;
         }

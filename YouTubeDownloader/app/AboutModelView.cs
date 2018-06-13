@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace YouTubeDownloader {
@@ -34,6 +35,19 @@ namespace YouTubeDownloader {
         private string AssemblyVersion {
             get {
                 return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            }
+        }
+
+        public string DisplayAssemblyFileVersion {
+            get {
+                return String.Format(CultureInfo.CurrentCulture, "Version: {0}", AssemblyFileVersion);
+            }
+        }
+
+        private string AssemblyFileVersion {
+            get {
+                FileVersionInfo info = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location);
+                return info.FileVersion;
             }
         }
 

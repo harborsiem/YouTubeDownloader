@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Net;
 using System.Globalization;
@@ -15,12 +16,15 @@ namespace YouTubeDownloader {
 
         private SaveFileDialog saveFileDialog;
         private BackgroundWorker backgroundWorker;
+        private System.Threading.Timer timer2;
 
         public MainForm() {
             if (!this.DesignMode) {
                 this.Font = SystemFonts.MessageBoxFont;
             }
             InitializeComponent();
+            //this.Shown += MainForm_Shown;
+            //this.FormClosing += MainForm_FormClosing;
             urlHeaderLabel.Font = new Font(this.Font.FontFamily, 12.0f);
             this.topPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.TopPanel_Paint);
             this.bottomLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.BottomLayout_Paint);
@@ -36,9 +40,27 @@ namespace YouTubeDownloader {
             this.copyUrlButton.Click += new System.EventHandler(this.CopyUrlButton_Click);
             this.aboutButton.Click += new System.EventHandler(this.AboutButton_Click);
             this.exitButton.Click += new System.EventHandler(this.ExitButton_Click);
+            //this.timer1.Enabled = false;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "Save the downloaded file";
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
+            timer2.Change(Timeout.Infinite, Timeout.Infinite);
+            timer2.Dispose();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e) {
+            timer2 = new System.Threading.Timer(ThreadingTimer, null, 100, 100);
+        }
+
+        private void ThreadingTimer(object state) {
+            if (this.InvokeRequired) {
+                this.Invoke(new Action(SetPasteButtonEnabled));
+            } else {
+                SetPasteButtonEnabled();
+            }
         }
 
         private void InitBackgroundWorker() {
@@ -50,6 +72,10 @@ namespace YouTubeDownloader {
         }
 
         private void Timer1_Tick(object sender, EventArgs e) {
+            SetPasteButtonEnabled();
+        }
+
+        private void SetPasteButtonEnabled() {
             pasteButton.Enabled = !backgroundWorker.IsBusy && !String.IsNullOrEmpty(Clipboard.GetText());
         }
 
@@ -158,7 +184,7 @@ namespace YouTubeDownloader {
                 MessageBox.Show(this, ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
         private void DownloadButton_Click(object sender, EventArgs e) {
             try {
                 VideoQuality tempItem = qualityComboBox.SelectedItem as VideoQuality;

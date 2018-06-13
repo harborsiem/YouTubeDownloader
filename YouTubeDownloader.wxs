@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="0DD4A3F9-D7FB-4228-B1E8-557DE6B9D41A" Name="YouTube Downloader" Language="1033" Version="2.2.0.0" Manufacturer="Harbor" UpgradeCode="6369D297-D448-4773-AADE-7B02C59F8C19">
+    <Product Id="E9749DB5-A7D8-41FE-8CD0-2AD57FA496F3" Name="YouTube Downloader" Language="1033" Version="2.3.0.0" Manufacturer="Harbor" UpgradeCode="6369D297-D448-4773-AADE-7B02C59F8C19">
         <Package Description="YouTube Downloader" Comments="YouTube Downloader Install" InstallerVersion="200" Compressed="yes" Platform="x86" InstallScope="perMachine" />
         <Media Id="1" Cabinet="product.cab" EmbedCab="yes" />
         <MajorUpgrade DowngradeErrorMessage="A later version of [ProductName] is already installed." Schedule="afterInstallValidate" />

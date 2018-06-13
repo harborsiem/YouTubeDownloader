@@ -44,7 +44,7 @@ namespace YouTubeDownloader {
             AboutModelView modelView = new AboutModelView();
             this.Text = modelView.DisplayAssemblyTitle;
             this.titleLabel.Text = modelView.AssemblyProduct;
-            this.versionLabel.Text = modelView.DisplayAssemblyVersion;
+            this.versionLabel.Text = modelView.DisplayAssemblyFileVersion;
             this.authorLabel.Text = modelView.DisplayAuthor;
             this.modifiedLabel.Text = modelView.DisplayModified;
             this.copyrightLabel.Text = modelView.AssemblyCopyright;
