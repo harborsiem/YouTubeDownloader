@@ -64,7 +64,7 @@ namespace YouTubeDownloader {
             catch {
             }
             if (e.Cancelled) {
-                DownloadStatus = DownloadStatus.Canceled;
+                DownloadStatus = DownloadStatus.Cancelled;
             } else if (e.Error != null) {
                 DownloadStatus = DownloadStatus.Failed;
             } else {

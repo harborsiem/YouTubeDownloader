@@ -103,5 +103,14 @@ namespace YouTubeDownloader {
             }
         }
 
+        public void ShowProjectPage() {
+            Process.Start("https://www.codeproject.com/script/Articles/ArticleVersion.aspx?aid=323771&av=652865");
+            //Process.Start("http://www.codeproject.com/Tips/323771/YouTube-Downloader-Using-Csharp-NET");
+        }
+
+        public void Close(Action callback) {
+            callback.Invoke();
+        }
+
     }
 }

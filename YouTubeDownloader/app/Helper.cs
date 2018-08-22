@@ -11,6 +11,12 @@ using System.Text.RegularExpressions;
 namespace YouTubeDownloader {
     public static class Helper {
 
+        public static string RemoveIllegalPathCharacters(string path) {
+            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            var r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+            return r.Replace(path, "");
+        }
+
         /// <summary>
         /// Decode a string
         /// </summary>
@@ -21,6 +27,9 @@ namespace YouTubeDownloader {
         //}
 
         public static bool IsValidUrl(string urlString) {
+            if (string.IsNullOrEmpty(urlString)) {
+                return false;
+            }
             string pattern = @"^(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$";
             Regex regex = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             return regex.IsMatch(urlString);

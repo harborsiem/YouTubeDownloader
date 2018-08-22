@@ -8,6 +8,6 @@ namespace YouTubeDownloader {
         Paused,
         Success,
         Failed,
-        Canceled
+        Cancelled
     }
 }

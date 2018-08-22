@@ -134,9 +134,9 @@ namespace YouTubeDownloader {
                 if (urls.Count > 0) {
                     TimeSpan videoLength = TimeSpan.FromSeconds(urls[0].Length);
                     if (videoLength.Hours > 0) {
-                        DrawVideoLength(String.Format(CultureInfo.InvariantCulture, "{0}:{1}:{2}", videoLength.Hours, videoLength.Minutes, videoLength.Seconds));
+                        DrawVideoLength(String.Format(CultureInfo.InvariantCulture, "{0}:{1}:{2}", videoLength.Hours, videoLength.Minutes.ToString("D2"), videoLength.Seconds.ToString("D2")));
                     } else {
-                        DrawVideoLength(String.Format(CultureInfo.InvariantCulture, "{0}:{1}", videoLength.Minutes, videoLength.Seconds));
+                        DrawVideoLength(String.Format(CultureInfo.InvariantCulture, "{0}:{1}", videoLength.Minutes, videoLength.Seconds.ToString("D2")));
                     }
 
                     nameTextLabel.Text = FormatTitle(urls[0].VideoTitle);
@@ -169,15 +169,18 @@ namespace YouTubeDownloader {
         }
 
         private void GetVideoButton_Click(object sender, EventArgs e) {
+            string url;
             try {
-                if (!Helper.IsValidUrl(urlTextBox.Text) || !urlTextBox.Text.ToLowerInvariant().Contains("youtube.com/watch?")) { //@org: "www.youtube.com/watch?"
-                    MessageBox.Show(this, "You enter invalid YouTube URL, Please correct it.\r\n\nNote: URL should start with:\r\nhttp://www.youtube.com/watch?",
+                bool isYoutubeUrl = YoutubeExtractor.DownloadUrlResolver.TryNormalizeYoutubeUrl(urlTextBox.Text, out url);
+                if (!isYoutubeUrl || !Helper.IsValidUrl(url) || !url.ToLowerInvariant().Contains("youtube.com/watch?")) { //@org: "www.youtube.com/watch?"
+                    MessageBox.Show(this, "You enter invalid YouTube URL, Please correct it." +
+                        Environment.NewLine + Environment.NewLine + "Note: URL should start with:" + Environment.NewLine + "http://www.youtube.com/watch?",
                         "Invalid URL", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 } else {
                     getVideoButton.Enabled = urlTextBox.Enabled = false;
                     progressBar.Visible = true;
-                    videoPictureBox.ImageLocation = string.Format(CultureInfo.InvariantCulture, "http://i3.ytimg.com/vi/{0}/default.jpg", YouTubeDownloader.GetVideoIdFromUrl(urlTextBox.Text));
-                    backgroundWorker.RunWorkerAsync(urlTextBox.Text);
+                    videoPictureBox.ImageLocation = string.Format(CultureInfo.InvariantCulture, "http://i3.ytimg.com/vi/{0}/default.jpg", YouTubeDownloader.GetVideoIdFromUrl(url));
+                    backgroundWorker.RunWorkerAsync(url);
                 }
             }
             catch (Exception ex) {
@@ -226,7 +229,7 @@ namespace YouTubeDownloader {
         }
 
         private void AboutButton_Click(object sender, EventArgs e) {
-            new AboutDialog().ShowDialog();
+            new AboutDialog().ShowDialog(this);
         }
 
         private void ExitButton_Click(object sender, EventArgs e) {

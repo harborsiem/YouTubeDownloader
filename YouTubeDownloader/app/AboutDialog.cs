@@ -7,11 +7,15 @@ using System.Diagnostics;
 
 namespace YouTubeDownloader {
     partial class AboutDialog : Form {
+
+        private AboutModelView modelView;
+
         public AboutDialog() {
             if (!DesignMode) {
                 this.Font = SystemFonts.MessageBoxFont;
             }
             InitializeComponent();
+            modelView = new AboutModelView();
             this.dialogLayout.Paint += DialogLayout_Paint;
             this.titleLabel.Font = new System.Drawing.Font(this.Font.FontFamily, this.Font.SizeInPoints + 2);
             this.bottomLayout.Paint += new System.Windows.Forms.PaintEventHandler(this.BottomLayout_Paint);
@@ -31,32 +35,32 @@ namespace YouTubeDownloader {
         }
 
         private void OkButton_Click(object sender, EventArgs e) {
+            modelView.Close(CloseForm);
+        }
+
+        private void CloseForm() {
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
         }
 
         private void LinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            Process.Start("https://www.codeproject.com/script/Articles/ArticleVersion.aspx?aid=323771&av=652865");
-            //Process.Start("http://www.codeproject.com/Tips/323771/YouTube-Downloader-Using-Csharp-NET");
+            modelView.ShowProjectPage();
         }
 
         private void InitControls() {
-            AboutModelView modelView = new AboutModelView();
             this.Text = modelView.DisplayAssemblyTitle;
             this.titleLabel.Text = modelView.AssemblyProduct;
             this.versionLabel.Text = modelView.DisplayAssemblyFileVersion;
             this.authorLabel.Text = modelView.DisplayAuthor;
             this.modifiedLabel.Text = modelView.DisplayModified;
             this.copyrightLabel.Text = modelView.AssemblyCopyright;
-            //this.textBoxDescription.Text = AssemblyDescription;
-
+            //this.textBoxDescription.Text = modelView.AssemblyDescription;
         }
 
         //private void InitBindings() {
-        //    AboutModelView modelView = new AboutModelView();
         //    this.DataBindings.Add(new Binding("Text", modelView, "DisplayAssemblyTitle"));
         //    this.titleLabel.DataBindings.Add(new Binding("Text", modelView, "AssemblyProduct"));
-        //    this.versionLabel.DataBindings.Add(new Binding("Text", modelView, "DisplayAssemblyVersion"));
+        //    this.versionLabel.DataBindings.Add(new Binding("Text", modelView, "DisplayAssemblyFileVersion"));
         //    this.authorLabel.DataBindings.Add(new Binding("Text", modelView, "DisplayAuthor"));
         //    this.modifiedLabel.DataBindings.Add(new Binding("Text", modelView, "DisplayModified"));
         //    this.copyrightLabel.DataBindings.Add(new Binding("Text", modelView, "AssemblyCopyright"));
