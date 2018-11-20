@@ -27,7 +27,6 @@ In the download dialog you can see the progress of the downloaded file.
 
 ![](./Images/DownloadDialog.jpg)
 
-## Installation
+## Installation file
 
-[Zipped installation file](https://github.com/harborsiem/YouTubeDownloader/files/1413758/YouTubeDownloader.zip)
-
+see "release" in the "<> Code" tab for a zipped MSI-file.

@@ -130,20 +130,24 @@ namespace YouTubeDownloader {
                 }
 
                 IList<VideoQuality> urls = e.Result as IList<VideoQuality>;
+                string videoLengthString;
+                string nameTextLabelText;
                 qualityComboBox.DataSource = urls;
                 if (urls.Count > 0) {
                     TimeSpan videoLength = TimeSpan.FromSeconds(urls[0].Length);
                     if (videoLength.Hours > 0) {
-                        DrawVideoLength(String.Format(CultureInfo.InvariantCulture, "{0}:{1}:{2}", videoLength.Hours, videoLength.Minutes.ToString("D2"), videoLength.Seconds.ToString("D2")));
+                        videoLengthString = String.Format(CultureInfo.InvariantCulture, "{0}:{1}:{2}", videoLength.Hours, videoLength.Minutes.ToString("D2"), videoLength.Seconds.ToString("D2"));
                     } else {
-                        DrawVideoLength(String.Format(CultureInfo.InvariantCulture, "{0}:{1}", videoLength.Minutes, videoLength.Seconds.ToString("D2")));
+                        videoLengthString = String.Format(CultureInfo.InvariantCulture, "{0}:{1}", videoLength.Minutes, videoLength.Seconds.ToString("D2"));
                     }
 
-                    nameTextLabel.Text = FormatTitle(urls[0].VideoTitle);
+                    nameTextLabelText = FormatTitle(urls[0].VideoTitle);
                 } else {
-                    DrawVideoLength("");
-                    nameTextLabel.Text = "";
+                    videoLengthString = string.Empty;
+                    nameTextLabelText = string.Empty;
                 }
+                DrawVideoLength(videoLengthString);
+                nameTextLabel.Text = nameTextLabelText;
                 qualityComboBox.Enabled = urlTextBox.Enabled = true;
                 progressBar.Visible = false;
 

@@ -162,7 +162,8 @@ namespace YouTubeDownloader {
             fileInfoRequest.Proxy = Helper.InitialProxy();
             HttpWebResponse fileInfoResponse = (HttpWebResponse)fileInfoRequest.GetResponse();
             bytesLength = fileInfoResponse.ContentLength;
-            fileInfoRequest.Abort();
+            fileInfoResponse.Close();
+            //fileInfoRequest.Abort();
             return bytesLength;
         }
 

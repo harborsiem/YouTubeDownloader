@@ -143,7 +143,9 @@ namespace YouTubeDownloader {
         }
 
         public void Close() {
-            this.response.Close();
+            if (response != null) {
+                this.response.Close();
+            }
         }
 
         #region Properties
@@ -154,7 +156,7 @@ namespace YouTubeDownloader {
 
         public Stream DownloadStream {
             get {
-                if (this.start == this.size) {
+                if (this.start == this.size || (this.stream == null && this.response == null)) {
                     return Stream.Null;
                 }
                 if (this.stream == null) {

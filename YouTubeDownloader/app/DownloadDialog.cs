@@ -47,6 +47,11 @@ namespace YouTubeDownloader {
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             modelView.DownloaderCompleted(e);
+            if (e.Error != null) {
+                this.Close();
+                MessageBox.Show("Exception in file download with Message: " + e.Error.Message, e.Error.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             if (e.Cancelled) {
                 this.Close();
                 return;
