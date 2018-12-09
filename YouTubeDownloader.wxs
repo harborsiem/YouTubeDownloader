@@ -29,7 +29,7 @@
         </DirectoryRef>
         <DirectoryRef Id="ApplicationMenuFolder">
             <Component Id="ApplicationShortcut" Guid="8681150B-9AFE-486A-BF6B-09C02519AC87">
-                <Shortcut Id="ApplicationStartMenuShortcut" Name="YouTube Downloader" Target="[APPLICATIONROOTDIRECTORY]YouTubeDownloader.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" Icon="AppIcon.exe" IconIndex="0" />
+                <Shortcut Id="ApplicationStartMenuShortcut" Name="YouTube Downloader" Target="[APPLICATIONROOTDIRECTORY]YouTubeDownloader.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" Icon="MainIcon.ico" IconIndex="0" />
                 <Shortcut Id="UninstallProduct" Name="Uninstall YouTube Downloader" Description="Uninstalls YouTube Downloader" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" />
                 <RemoveFolder Id="ApplicationMenuFolder" On="uninstall" />
                 <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Value="" Type="string" KeyPath="yes" />
@@ -44,7 +44,8 @@
         </Feature>
         <UIRef Id="WixUI_Minimal" />
         <UIRef Id="WixUI_ErrorProgressText" />
-        <Icon Id="AppIcon.exe" SourceFile="App_Icon.ico" />
+        <Icon Id="MainIcon.ico" SourceFile="App_Icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="MainIcon.ico" />
         <WixVariable Id="WixUILicenseRtf" Value="Cpol.rtf" />
     </Product>
 </Wix>

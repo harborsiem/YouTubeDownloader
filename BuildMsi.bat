@@ -25,7 +25,7 @@ Set MsBuildPath="%ProgramFiles%\Microsoft Visual Studio\2017\Community\MSBuild\1
 
 Set AppName=YouTubeDownloader
 Set Wix3xPath=%X86ProgramFiles%\WiX Toolset v3.11\bin
-"%Wix3xPath%\candle.exe" -nologo %AppName%.wxs -out %AppName%.wixobj -ext WixUtilExtension -ext WixUIExtension  -ext WixNetFxExtension
+"%Wix3xPath%\candle.exe" -nologo %AppName%.wxs -out %AppName%.wixobj
 "%Wix3xPath%\light.exe" -nologo %AppName%.wixobj -out %AppName%.msi -ext WixUtilExtension -ext WixUIExtension  -ext WixNetFxExtension
 pause
 
