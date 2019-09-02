@@ -53,7 +53,7 @@ namespace YouTubeDownloader {
             if (ageGateContent && !string.IsNullOrEmpty(stsValue)) {
                 infoUrl = string.Format(CultureInfo.InvariantCulture, "https://www.youtube.com/get_video_info?video_id={0}&eurl=https://youtube.googleapis.com/v/{1}&sts={2}", longId, id, stsValue);
             } else {
-                infoUrl = string.Format(CultureInfo.InvariantCulture, "http://www.youtube.com/get_video_info?&video_id={0}&el=detailpage&ps=default&eurl=&gl=US&hl=en", longId);
+                infoUrl = string.Format(CultureInfo.InvariantCulture, "https://www.youtube.com/get_video_info?&video_id={0}&el=detailpage&ps=default&eurl=&gl=US&hl=en", longId);
             }
             infoText = webClient.DownloadString(infoUrl);
             webClient.Dispose();
@@ -133,11 +133,17 @@ namespace YouTubeDownloader {
                     var videoItem = new VideoQuality();
                     videoItem.DownloadUrl = url;
                     videoItem.VideoSize = size;
+                    if (!string.IsNullOrEmpty(title)) {
                     videoItem.VideoTitle = title;
+                    } else {
+                        videoItem.VideoTitle = "Unknown";
+                    }
                     var tagInfo = new ITagInfo(Uri.UnescapeDataString(data["itag"]));
                     videoItem.Dimension = tagInfo.VideoDimensions;
                     videoItem.Extension = tagInfo.VideoExtensions;
-                    videoItem.Length = long.Parse(videoDuration, CultureInfo.InvariantCulture);
+                    if (!string.IsNullOrEmpty(videoDuration)) {
+                        videoItem.Length = long.Parse(videoDuration, CultureInfo.InvariantCulture);
+                    }
                     list.Add(videoItem);
                 }
                 catch (Exception) {
